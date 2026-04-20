@@ -5,7 +5,7 @@
 */
 
 const basePath = window.location.href.split("?")[0];
-const usageMsg = `[*] USAGE: ${basePath}?channel=<CHANNEL_NAME>&binaryType=<BINARY_TYPE>&version=<VERSION_HASH>
+const usageMsg = `[*] USAGE: ${basePath}?channel=<CHANNEL_NAME>&binaryType=<BINARY_TYPE>&arch=<ARCH>&version=<VERSION_HASH>
 
     Binary Types:
     * WindowsPlayer
@@ -15,17 +15,6 @@ const usageMsg = `[*] USAGE: ${basePath}?channel=<CHANNEL_NAME>&binaryType=<BINA
 
     Extra Notes:
     * If \`channel\` isn't provided, it will default to "LIVE" (the production channel)
-
-    You can also use an extra query argument we provide, \`blobDir\`, for specifying
-    where RDD should fetch deployment files from. This is useful for using different
-    relative directories than normal for a certain client type, such as for fetching
-    stuff from /mac/arm64/ instead of /mac/
-
-    Blob Directories (Examples):
-    * "/" (Default for WindowsPlayer/WindowsStudio64)
-    * "/mac/" (Default for MacPlayer/MacStudio)
-    * "/mac/arm64/"
-    ..
 `;
 
 const hostPath = "https://setup-aws.rbxcdn.com"; // Only the AWS mirror has proper CORS cfg
@@ -111,19 +100,31 @@ const extractRoots = {
 const binaryTypes = {
     WindowsPlayer: {
         //versionFile: "/version",
-        blobDir: "/"
+        blobDirs: {
+          "x86-64": "/"
+        }
     },
     WindowsStudio64: {
         //versionFile: "/versionQTStudio",
-        blobDir: "/"
+        blobDirs: {
+          "x86-64": "/"
+        }
     },
     MacPlayer: {
         //versionFile: "/mac/version",
-        blobDir: "/mac/"
+        defaultArch: "arm64",
+        blobDirs: {
+          "arm64": "/mac/arm64/",
+          "x86-64": "/mac/"
+        }
     },
     MacStudio: {
         //versionFile: "/mac/versionStudio",
-        blobDir: "/mac/"
+        defaultArch: "arm64",
+        blobDirs: {
+          "arm64": "/mac/arm64/",
+          "x86-64": "/mac/"
+        }
     },
 }
 
@@ -132,10 +133,44 @@ const urlParams = new URLSearchParams(window.location.search);
 const consoleText = document.getElementById("consoleText");
 const downloadForm = document.getElementById("downloadForm");
 const downloadFormDiv = document.getElementById("downloadFormDiv");
+const archSelect = document.getElementById("arch");
+const binaryTypeSelect = document.getElementById("binaryType");
+
+function populateArchSelect(binaryTypeName) {
+    archSelect.innerHTML = "";
+    const binaryTypeObject = binaryTypes[binaryTypeName];
+    if (! binaryTypeObject) {
+        return;
+    }
+
+    const archs = Object.keys(binaryTypeObject.blobDirs);
+    for (const archName of archs) {
+        const option = document.createElement("option");
+        option.value = archName;
+        option.text = archName;
+        archSelect.appendChild(option);
+    }
+
+    if (binaryTypeObject.defaultArch) {
+        archSelect.value = binaryTypeObject.defaultArch;
+    }
+};
+
+binaryTypeSelect.addEventListener("change", function() {
+    populateArchSelect(binaryTypeSelect.value);
+});
+
+populateArchSelect(binaryTypeSelect.value);
 
 function getPermLink() {
     const channelName = downloadForm.channel.value.trim() || downloadForm.channel.placeholder;
     let queryString = `?channel=${encodeURIComponent(channelName)}&binaryType=${encodeURIComponent(downloadForm.binaryType.value)}`;
+
+    const binaryTypeObj = binaryTypes[downloadForm.binaryType.value];
+    const defaultArch = binaryTypeObj.defaultArch || Object.keys(binaryTypeObj.blobDirs)[0];
+    if (archSelect.value !== defaultArch) {
+        queryString += `&arch=${encodeURIComponent(archSelect.value)}`;
+    }
 
     const versionHash = downloadForm.version.value.trim();
     if (versionHash !== "") {
@@ -244,6 +279,7 @@ let channel = getQuery("channel");
 let version = getQuery("version") || getQuery("guid");
 let binaryType = getQuery("binaryType");
 let blobDir = getQuery("blobDir");
+let arch = getQuery("arch");
 
 let compressZip = getQuery("compressZip");
 let compressionLevel = getQuery("compressionLevel");
@@ -340,9 +376,13 @@ function main() {
     if (binaryType in binaryTypes) {
         const binaryTypeObject = binaryTypes[binaryType];
 
+        if (! arch) {
+            arch = binaryTypeObject.defaultArch || Object.keys(binaryTypeObject.blobDirs)[0];
+        }
+
         // If `blobDir` has already been defined by the user, we don't want to override it here
         if (! blobDir) {
-            blobDir = binaryTypeObject.blobDir;
+            blobDir = binaryTypeObject.blobDirs[arch];
         }
     } else {
         log(`[!] Error: \`binaryType\` "${binaryType}" not supported. See below for supported \`binaryType\` inputs:`, "\n\n");
@@ -363,6 +403,8 @@ function main() {
         // Same options as may have been input from the page before
         downloadForm.channel.value = channelNameEncoded;
         downloadForm.binaryType.value = binaryTypeEncoded;
+        populateArchSelect(binaryType);
+        archSelect.value = arch;
         downloadForm.compressZip.checked = compressZip;
         downloadForm.compressionLevel.value = compressionLevel;
 
