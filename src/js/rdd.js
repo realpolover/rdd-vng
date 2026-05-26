@@ -2,6 +2,11 @@
     rdd - https://github.com/latte-soft/rdd
 
     Copyright (C) 2024-2026 Latte Softworks <latte.to> | MIT License
+
+    rdd-vng - https://github.com/realpolover/rdd-vng
+
+    Modification by realpolover
+
 */
 
 const basePath = window.location.href.split("?")[0];

@@ -2,7 +2,7 @@
 [badges/last-modified]: https://img.shields.io/github/last-commit/latte-soft/rdd?label=Last%20Modifed
 
 > [!CAUTION]
-> This is fork of https://github.com/latte-soft/rdd intended to download [Roblox-VNG](https://roblox.vnggames.com) version for Windows/Mac. DO NOT USE THIS TO DOWNLOAD NORMAL ROBLOX.
+> This is fork of https://github.com/latte-soft/rdd intended to download [Roblox-VNG](https://roblox.vnggames.com) version for Windows/Mac. **DO NOT USE THIS TO DOWNLOAD NORMAL ROBLOX.**
 
 ## RDD-VNG ("Roblox Deployment Downloader-VNG")
 
@@ -10,16 +10,17 @@
 
 Locally download Roblox-VNG deployments (Windows/Mac) directly from your browser!
 
-Hosted officially @ <will be added>
 
 ### What is this?
 
 RDD-VNG can assemble plain resources directly from Roblox-VNG's [`setup`](https://setup.rbxcdn.com/vng) S3 storage bucket into a format the user would expect to be able to directly extract/run from. **Everything is fetched locally in your browser, without any additional required server resources!**
 
-### Usage
+### How to use?
 
 ```txt
-[*] USAGE: https://rdd.latte.to/?channel=<CHANNEL_NAME>&binaryType=<BINARY_TYPE>&arch=<ARCH>&version=<VERSION_HASH>
+[*] How to use: 
+1. Download the source code
+2. Go to /src folder then open index.html on browser
 
     Binary Types:
     * WindowsPlayer
