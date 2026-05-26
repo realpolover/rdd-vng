@@ -17,7 +17,7 @@ const usageMsg = `[*] USAGE: ${basePath}?channel=<CHANNEL_NAME>&binaryType=<BINA
     * If \`channel\` isn't provided, it will default to "LIVE" (the production channel)
 `;
 
-const hostPath = "https://setup-aws.rbxcdn.com"; // Only the AWS mirror has proper CORS cfg
+const hostPath = "https://setup-aws.rbxcdn.com/vng"; // Only the AWS mirror has proper CORS cfg
 
 // Root extract locations for the Win manifests
 const extractRoots = {
