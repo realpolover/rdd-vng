@@ -14,9 +14,6 @@ const usageMsg = `[*] USAGE: ${basePath}?channel=<CHANNEL_NAME>&binaryType=<BINA
 
     Binary Types:
     * WindowsPlayer
-    * WindowsStudio64
-    * MacPlayer
-    * MacStudio
 
     Extra Notes:
     * If \`channel\` isn't provided, it will default to "LIVE" (the production channel)
@@ -107,28 +104,6 @@ const binaryTypes = {
         //versionFile: "/version",
         blobDirs: {
           "x86-64": "/"
-        }
-    },
-    WindowsStudio64: {
-        //versionFile: "/versionQTStudio",
-        blobDirs: {
-          "x86-64": "/"
-        }
-    },
-    MacPlayer: {
-        //versionFile: "/mac/version",
-        defaultArch: "arm64",
-        blobDirs: {
-          "arm64": "/mac/arm64/",
-          "x86-64": "/mac/"
-        }
-    },
-    MacStudio: {
-        //versionFile: "/mac/versionStudio",
-        defaultArch: "arm64",
-        blobDirs: {
-          "arm64": "/mac/arm64/",
-          "x86-64": "/mac/"
         }
     },
 }
