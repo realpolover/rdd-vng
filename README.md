@@ -1,5 +1,5 @@
-[commits]: https://github.com/latte-soft/rdd/commits
-[badges/last-modified]: https://img.shields.io/github/last-commit/latte-soft/rdd?label=Last%20Modifed
+[commits]: https://github.com/realpolover/rdd-vng/commits
+[badges/last-modified]: https://img.shields.io/github/last-commit/realpolover/rdd-vng?label=Last%20Modifed
 
 > [!CAUTION]
 > This is fork of https://github.com/latte-soft/rdd intended to download [Roblox-VNG](https://roblox.vnggames.com) Player version for Windows. **DO NOT USE THIS TO DOWNLOAD NORMAL ROBLOX.** MacOS and Roblox Studio are not supported.
@@ -31,7 +31,7 @@ RDD-VNG can assemble plain resources directly from Roblox-VNG's [`setup`](https:
 
 ### Extras
 
-* [JSZip](https://github.com/Stuk/jszip) (Used for `WindowsPlayer`/`WindowsStudio` file extraction/generation)
+* [JSZip](https://github.com/Stuk/jszip) (Used for `WindowsPlayer` file extraction/generation)
 
 ## License
 
